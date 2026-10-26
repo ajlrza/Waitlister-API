@@ -1,5 +1,5 @@
 import { Hono } from 'hono'
-import { cors } from 'hono/cors' // Import CORS middleware
+import { cors } from 'hono/cors'
 import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 import * as schema from "./schema";
@@ -27,17 +27,14 @@ function encodeBase62(num: string) {
     const base = BigInt(62);
 
     while (n > 0n) {
-        // Get the remainder (this is our character index)
         const remainder = n % base;
         result = B62_ALPHABET_ENCODE[Number(remainder)] + result;
 
-        // Divide by 62 and truncate to move to the next "place"
         n = n / base;
     }
     return (result);
 }
 
-// DECODER FUNCTION
 function decodeBase62BigInt(str: string) {
     let decimal = BigInt(0);
     const base = BigInt(62);
@@ -47,7 +44,7 @@ function decodeBase62BigInt(str: string) {
         decimal = decimal * base + value;
     }
 
-    return decimal.toString(); // Returns as string to avoid precision loss elsewhere
+    return decimal.toString(); 
 }
 
 app.use(async (c, next) => {
@@ -132,7 +129,7 @@ app.post('/', async (c) => {
         try {
 
           const encodeLeadId: string = encodeBase62(newId.toString());
-          const referralLink = https://pov-orignal.vercel.app?ref=${encodeLeadId};
+          const referralLink = "ADD LINK HERE";
 
           const queuePosition = await db
               .with(queueRankings).select().from(queueRankings).where(eq(queueRankings.leadId, newId))
@@ -199,7 +196,7 @@ app.post('/', async (c) => {
 
           const leadId: string = newId.toString();
           const encodeLeadId = encodeBase62(leadId)
-          const referralLink = http://localhost:5173?ref=${encodeLeadId};
+          const referralLink = "ADD LINK HERE";
 
           return c.json({success: true, message:'Successfully added to waitlist! would you like to refer others as well?', referralLink: referralLink, queueRank: queuePosition[0].queuePosition})
         }
